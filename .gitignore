@@ -1,0 +1,51 @@
+# Build output
+target/
+build/
+out/
+dist/
+*.class
+
+# Next.js
+.next/
+next-env.d.ts
+.vercel
+
+# Node
+node_modules/
+.npm/
+.eslintcache
+*.tsbuildinfo
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Environment and secrets
+.env
+.env.local
+.env.*.local
+*.pem
+application-secret*.yml
+application-local.yml
+
+# OS and editor
+.DS_Store
+Thumbs.db
+*.swp
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.settings/
+.project
+.classpath
+.factorypath
+
+# Maven wrapper binary (the script only wrapper bootstraps it on first run)
+.mvn/wrapper/maven-wrapper.jar
+
+# Temp
+tmp/
+*.tmp
