@@ -80,8 +80,9 @@ cd backend
 
 On Windows Command Prompt use `mvnw spring-boot:run`, on PowerShell `.\mvnw spring-boot:run`.
 
-The API runs on http://localhost:8080. Health is at
-http://localhost:8080/actuator/health.
+The API runs on http://localhost:8090, on a non default port so it does not clash
+with other local services. Health is at http://localhost:8090/actuator/health.
+Set `SERVER_PORT` to change it.
 
 ### 3. Start the frontend
 

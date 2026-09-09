@@ -1,6 +1,6 @@
 import type { NextConfig } from "next";
 
-const apiTarget = process.env.API_PROXY_TARGET ?? "http://localhost:8080";
+const apiTarget = process.env.API_PROXY_TARGET ?? "http://localhost:8090";
 
 const nextConfig: NextConfig = {
   async rewrites() {

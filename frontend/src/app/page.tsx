@@ -1,4 +1,4 @@
-const apiBase = process.env.API_PROXY_TARGET ?? "http://localhost:8080";
+const apiBase = process.env.API_PROXY_TARGET ?? "http://localhost:8090";
 
 type Meta = { name: string; version: string; time: string };
 
