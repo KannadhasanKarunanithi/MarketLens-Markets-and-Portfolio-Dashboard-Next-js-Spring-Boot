@@ -32,4 +32,28 @@ management:
 marketlens:
   version: ${APP_VERSION:dev}
   cors:
-    allowed-origins: http://localhost:3000
+    allowed-origins: ${CORS_ORIGINS:http://localhost:3000}
+  security:
+    jwt:
+      secret: ${JWT_SECRET:change-me-in-production-this-must-be-long-enough-for-hs512-signing}
+      issuer: marketlens
+      access-token-ttl: 15m
+      refresh-token-ttl: 7d
+  bootstrap:
+    admin:
+      username: admin
+      display-name: Site Administrator
+      password: ${ADMIN_PASSWORD:admin12345}
+    demo:
+      username: demo
+      display-name: Demo Investor
+      password: ${DEMO_PASSWORD:demo12345}
+    demo-enabled: true
+  marketdata:
+    provider: simulated
+    seed-days: 220
+    tick-interval: 15s
+
+logging:
+  level:
+    org.flywaydb: info
