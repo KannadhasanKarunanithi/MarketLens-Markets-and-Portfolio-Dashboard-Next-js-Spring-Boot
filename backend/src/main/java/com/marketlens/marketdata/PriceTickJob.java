@@ -13,6 +13,8 @@ import com.marketlens.pricebar.PriceBar;
 import com.marketlens.pricebar.PriceBarRepository;
 import com.marketlens.quote.Quote;
 import com.marketlens.quote.QuoteRepository;
+import com.marketlens.quote.QuoteStream;
+import com.marketlens.quote.dto.QuoteResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -32,13 +34,15 @@ public class PriceTickJob {
     private final QuoteRepository quotes;
     private final PriceBarRepository priceBars;
     private final MarketDataProviders providers;
+    private final QuoteStream quoteStream;
 
     public PriceTickJob(InstrumentRepository instruments, QuoteRepository quotes,
-            PriceBarRepository priceBars, MarketDataProviders providers) {
+            PriceBarRepository priceBars, MarketDataProviders providers, QuoteStream quoteStream) {
         this.instruments = instruments;
         this.quotes = quotes;
         this.priceBars = priceBars;
         this.providers = providers;
+        this.quoteStream = quoteStream;
     }
 
     @Scheduled(fixedDelayString = "${marketlens.marketdata.tick-interval}", initialDelay = 20_000)
@@ -70,6 +74,13 @@ public class PriceTickJob {
             quote.update(next);
             priceBars.save(bar);
         }
+        quotes.saveAll(currentQuotes);
+
+        List<QuoteResponse> responses = currentQuotes.stream()
+                .filter(q -> byId.containsKey(q.getInstrumentId()))
+                .map(q -> QuoteResponse.of(byId.get(q.getInstrumentId()), q))
+                .toList();
+        quoteStream.publish(responses);
         log.debug("Ticked {} instruments", currentQuotes.size());
     }
 }
