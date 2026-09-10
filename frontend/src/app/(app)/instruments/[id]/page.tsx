@@ -51,7 +51,7 @@ export default function InstrumentDetailPage() {
   const changeAbs = liveQuote?.changeAbs ?? quote.data?.changeAbs ?? 0;
 
   if (instrument.isLoading) return <Spinner label="Loading instrument" />;
-  if (!instrument.data) return <p className="text-sm text-slate-500">Instrument not found.</p>;
+  if (!instrument.data) return <p className="text-sm text-ink-dim">Instrument not found.</p>;
 
   const it = instrument.data;
 
@@ -59,14 +59,14 @@ export default function InstrumentDetailPage() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-ink-dim">
             {it.exchange} · {it.sector} · {it.assetClass}
           </p>
-          <h1 className="text-2xl font-semibold text-slate-900">{it.symbol}</h1>
-          <p className="text-sm text-slate-500">{it.name}</p>
+          <h1 className="text-2xl font-semibold text-ink">{it.symbol}</h1>
+          <p className="text-sm text-ink-dim">{it.name}</p>
         </div>
         <div className="text-right">
-          <p className="text-2xl font-semibold tabular-nums text-slate-900">{formatCurrency(price)}</p>
+          <p className="text-2xl font-semibold tabular-nums text-ink">{formatCurrency(price)}</p>
           <p className={cx("text-sm tabular-nums", trendClass(changePct))}>
             {formatCurrency(changeAbs)} ({formatPercent(changePct)})
           </p>
@@ -84,7 +84,7 @@ export default function InstrumentDetailPage() {
                   onClick={() => setMode(m)}
                   className={cx(
                     "rounded-md px-2 py-1 text-xs font-medium capitalize",
-                    mode === m ? "bg-slate-900 text-white" : "text-slate-600 hover:bg-slate-100",
+                    mode === m ? "bg-panel-2 text-ink" : "text-ink-dim hover:bg-panel-2",
                   )}
                 >
                   {m}
@@ -101,7 +101,7 @@ export default function InstrumentDetailPage() {
                 onClick={() => setRange(r)}
                 className={cx(
                   "rounded-md px-2 py-1 text-xs font-medium uppercase",
-                  range === r ? "bg-blue-600 text-white" : "text-slate-600 hover:bg-slate-100",
+                  range === r ? "bg-gold text-base" : "text-ink-dim hover:bg-panel-2",
                 )}
               >
                 {r}
@@ -125,13 +125,13 @@ export default function InstrumentDetailPage() {
         <StatCard label="Previous close" value={formatCurrency(quote.data?.prevClose)} />
       </div>
 
-      <p className="text-sm text-slate-500">
+      <p className="text-sm text-ink-dim">
         Manage this instrument from{" "}
-        <Link href="/markets" className="text-blue-600 hover:underline">
+        <Link href="/markets" className="text-gold hover:underline">
           Markets
         </Link>{" "}
         or set a price alert from{" "}
-        <Link href="/alerts" className="text-blue-600 hover:underline">
+        <Link href="/alerts" className="text-gold hover:underline">
           Alerts
         </Link>
         .

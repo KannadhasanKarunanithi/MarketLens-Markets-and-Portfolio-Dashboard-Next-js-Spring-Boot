@@ -31,9 +31,9 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-      <h2 className="text-lg font-semibold text-slate-900">Create your account</h2>
-      <p className="mt-1 text-sm text-slate-500">It takes a moment.</p>
+    <div className="rounded-md border border-line bg-panel p-6">
+      <h2 className="text-lg font-semibold text-ink">Create your account</h2>
+      <p className="mt-1 text-sm text-ink-dim">It takes a moment.</p>
 
       <form className="mt-5 space-y-4" onSubmit={submit}>
         <Field label="Username">
@@ -71,9 +71,9 @@ export default function RegisterPage() {
         </Button>
       </form>
 
-      <p className="mt-4 text-sm text-slate-500">
+      <p className="mt-4 text-sm text-ink-dim">
         Already have an account?{" "}
-        <Link href="/login" className="font-medium text-blue-600 hover:underline">
+        <Link href="/login" className="font-medium text-gold hover:underline">
           Sign in
         </Link>
       </p>

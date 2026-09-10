@@ -95,14 +95,14 @@ export default function MarketsPage() {
             key={list.id}
             onClick={() => setSelectedId(list.id)}
             className={cx(
-              "rounded-lg px-3 py-1.5 text-sm font-medium",
+              "rounded px-3 py-1.5 text-sm font-medium",
               selected?.id === list.id
-                ? "bg-slate-900 text-white"
-                : "border border-slate-300 bg-white text-slate-700 hover:bg-slate-50",
+                ? "bg-panel-2 text-ink"
+                : "border border-line bg-panel text-ink hover:bg-panel-2",
             )}
           >
             {list.name}
-            <span className="ml-1.5 text-xs text-slate-400">{list.items.length}</span>
+            <span className="ml-1.5 text-xs text-ink-faint">{list.items.length}</span>
           </button>
         ))}
         <form
@@ -151,7 +151,7 @@ export default function MarketsPage() {
                 </div>
               ) : (
                 <table className="w-full text-sm">
-                  <thead className="border-b border-slate-100 text-left text-xs uppercase text-slate-500">
+                  <thead className="border-b border-line-soft text-left text-xs uppercase text-ink-dim">
                     <tr>
                       <th className="px-5 py-2 font-medium">Symbol</th>
                       <th className="px-5 py-2 text-right font-medium">Last</th>
@@ -159,21 +159,21 @@ export default function MarketsPage() {
                       <th className="px-5 py-2" />
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-100">
+                  <tbody className="divide-y divide-line-soft">
                     {selected.items.map((item) => {
                       const liveQuote = live[item.symbol];
                       const price = liveQuote?.lastPrice ?? item.lastPrice;
                       const changePct = liveQuote?.changePct ?? item.changePct;
                       return (
-                        <tr key={item.instrumentId} className="hover:bg-slate-50">
+                        <tr key={item.instrumentId} className="hover:bg-panel-2">
                           <td className="px-5 py-3">
                             <Link
                               href={`/instruments/${item.instrumentId}`}
-                              className="font-medium text-slate-900 hover:text-blue-600"
+                              className="font-medium text-ink hover:text-gold"
                             >
                               {item.symbol}
                             </Link>
-                            <p className="text-xs text-slate-500">{item.sector}</p>
+                            <p className="text-xs text-ink-dim">{item.sector}</p>
                           </td>
                           <td className="px-5 py-3 text-right tabular-nums">
                             {formatCurrency(price)}
@@ -184,7 +184,7 @@ export default function MarketsPage() {
                           <td className="px-5 py-3 text-right">
                             <button
                               onClick={() => removeItem.mutate(item.instrumentId)}
-                              className="text-xs text-slate-400 hover:text-rose-600"
+                              className="text-xs text-ink-faint hover:text-down"
                             >
                               Remove
                             </button>
@@ -212,13 +212,13 @@ export default function MarketsPage() {
                   <li key={instrument.id}>
                     <button
                       onClick={() => addItem.mutate(instrument.id)}
-                      className="flex w-full items-center justify-between rounded-lg px-2 py-2 text-left text-sm hover:bg-slate-50"
+                      className="flex w-full items-center justify-between rounded px-2 py-2 text-left text-sm hover:bg-panel-2"
                     >
                       <span>
-                        <span className="font-medium text-slate-900">{instrument.symbol}</span>
-                        <span className="ml-2 text-xs text-slate-500">{instrument.name}</span>
+                        <span className="font-medium text-ink">{instrument.symbol}</span>
+                        <span className="ml-2 text-xs text-ink-dim">{instrument.name}</span>
                       </span>
-                      <span className="text-xs text-blue-600">Add</span>
+                      <span className="text-xs text-gold">Add</span>
                     </button>
                   </li>
                 ))}

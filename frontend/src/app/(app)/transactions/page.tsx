@@ -194,7 +194,7 @@ export default function TransactionsPage() {
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
-                <thead className="border-b border-slate-100 text-left text-xs uppercase text-slate-500">
+                <thead className="border-b border-line-soft text-left text-xs uppercase text-ink-dim">
                   <tr>
                     <th className="px-5 py-2 font-medium">Date</th>
                     <th className="px-5 py-2 font-medium">Type</th>
@@ -205,9 +205,9 @@ export default function TransactionsPage() {
                     <th className="px-5 py-2" />
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100">
+                <tbody className="divide-y divide-line-soft">
                   {rows.map((tx) => (
-                    <tr key={tx.id} className="hover:bg-slate-50">
+                    <tr key={tx.id} className="hover:bg-panel-2">
                       <td className="px-5 py-3 whitespace-nowrap">{formatDate(tx.tradedOn)}</td>
                       <td className="px-5 py-3">
                         <Badge
@@ -217,8 +217,8 @@ export default function TransactionsPage() {
                         </Badge>
                       </td>
                       <td className="px-5 py-3">
-                        <span className="font-medium text-slate-900">{tx.symbol}</span>
-                        {tx.note ? <p className="text-xs text-slate-500">{tx.note}</p> : null}
+                        <span className="font-medium text-ink">{tx.symbol}</span>
+                        {tx.note ? <p className="text-xs text-ink-dim">{tx.note}</p> : null}
                       </td>
                       <td className="px-5 py-3 text-right tabular-nums">{formatNumber(tx.quantity)}</td>
                       <td className="px-5 py-3 text-right tabular-nums">{formatCurrency(tx.price)}</td>
@@ -226,7 +226,7 @@ export default function TransactionsPage() {
                       <td className="px-5 py-3 text-right">
                         <button
                           onClick={() => remove.mutate(tx.id)}
-                          className="text-xs text-slate-400 hover:text-rose-600"
+                          className="text-xs text-ink-faint hover:text-down"
                         >
                           Delete
                         </button>

@@ -34,9 +34,9 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-      <h2 className="text-lg font-semibold text-slate-900">Sign in</h2>
-      <p className="mt-1 text-sm text-slate-500">Use your MarketLens account.</p>
+    <div className="rounded-md border border-line bg-panel p-6">
+      <h2 className="text-lg font-semibold text-ink">Sign in</h2>
+      <p className="mt-1 text-sm text-ink-dim">Use your MarketLens account.</p>
 
       <form className="mt-5 space-y-4" onSubmit={submit}>
         <Field label="Username">
@@ -64,14 +64,14 @@ export default function LoginPage() {
         </Button>
       </form>
 
-      <p className="mt-4 text-sm text-slate-500">
+      <p className="mt-4 text-sm text-ink-dim">
         New here?{" "}
-        <Link href="/register" className="font-medium text-blue-600 hover:underline">
+        <Link href="/register" className="font-medium text-gold hover:underline">
           Create an account
         </Link>
       </p>
-      <p className="mt-2 text-xs text-slate-400">
-        Demo login: <span className="font-medium">demo</span> / <span className="font-medium">demo12345</span>
+      <p className="tnum mt-2 text-xs text-ink-faint">
+        Demo login: <span className="text-ink-dim">demo</span> / <span className="text-ink-dim">demo12345</span>
       </p>
     </div>
   );

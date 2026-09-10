@@ -12,9 +12,7 @@ export function Card({
   className?: string;
 }) {
   return (
-    <div className={cx("rounded-xl border border-slate-200 bg-white shadow-sm", className)}>
-      {children}
-    </div>
+    <div className={cx("rounded-md border border-line bg-panel", className)}>{children}</div>
   );
 }
 
@@ -28,10 +26,10 @@ export function CardHeader({
   action?: ReactNode;
 }) {
   return (
-    <div className="flex items-start justify-between gap-4 border-b border-slate-100 px-5 py-4">
+    <div className="flex items-start justify-between gap-4 border-b border-line-soft px-4 py-3">
       <div>
-        <h2 className="text-sm font-semibold text-slate-900">{title}</h2>
-        {subtitle ? <p className="mt-0.5 text-xs text-slate-500">{subtitle}</p> : null}
+        <h2 className="text-xs font-semibold uppercase tracking-widest text-ink-dim">{title}</h2>
+        {subtitle ? <p className="mt-1 text-xs text-ink-faint">{subtitle}</p> : null}
       </div>
       {action}
     </div>
@@ -39,7 +37,7 @@ export function CardHeader({
 }
 
 export function CardBody({ children, className }: { children: ReactNode; className?: string }) {
-  return <div className={cx("px-5 py-4", className)}>{children}</div>;
+  return <div className={cx("px-4 py-4", className)}>{children}</div>;
 }
 
 export function StatCard({
@@ -53,14 +51,13 @@ export function StatCard({
   hint?: ReactNode;
   tone?: "neutral" | "up" | "down";
 }) {
-  const toneClass =
-    tone === "up" ? "text-emerald-600" : tone === "down" ? "text-rose-600" : "text-slate-900";
+  const toneClass = tone === "up" ? "text-up" : tone === "down" ? "text-down" : "text-ink";
   return (
-    <Card className="p-5">
-      <p className="text-xs font-medium uppercase tracking-wide text-slate-500">{label}</p>
-      <p className={cx("mt-2 text-2xl font-semibold tabular-nums", toneClass)}>{value}</p>
-      {hint ? <p className="mt-1 text-xs text-slate-500">{hint}</p> : null}
-    </Card>
+    <div className="rounded-md border border-line bg-panel p-4">
+      <p className="text-[11px] font-medium uppercase tracking-widest text-ink-faint">{label}</p>
+      <p className={cx("tnum mt-2 text-xl font-semibold", toneClass)}>{value}</p>
+      {hint ? <p className="tnum mt-1 text-xs text-ink-dim">{hint}</p> : null}
+    </div>
   );
 }
 
@@ -72,16 +69,16 @@ export function Badge({
   tone?: "slate" | "green" | "red" | "amber" | "blue";
 }) {
   const tones: Record<string, string> = {
-    slate: "bg-slate-100 text-slate-700",
-    green: "bg-emerald-100 text-emerald-700",
-    red: "bg-rose-100 text-rose-700",
-    amber: "bg-amber-100 text-amber-700",
-    blue: "bg-blue-100 text-blue-700",
+    slate: "border-line bg-panel-2 text-ink-dim",
+    green: "border-up/30 bg-up/10 text-up",
+    red: "border-down/30 bg-down/10 text-down",
+    amber: "border-gold/30 bg-gold/10 text-gold",
+    blue: "border-gold/30 bg-gold/10 text-gold",
   };
   return (
     <span
       className={cx(
-        "inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium",
+        "inline-flex items-center rounded border px-1.5 py-0.5 text-[11px] font-medium uppercase tracking-wide",
         tones[tone],
       )}
     >
@@ -106,10 +103,10 @@ export function Button({
   className?: string;
 }) {
   const variants: Record<string, string> = {
-    primary: "bg-blue-600 text-white hover:bg-blue-700 disabled:bg-blue-300",
-    secondary: "border border-slate-300 bg-white text-slate-700 hover:bg-slate-50",
-    ghost: "text-slate-600 hover:bg-slate-100",
-    danger: "border border-rose-200 bg-white text-rose-600 hover:bg-rose-50",
+    primary: "bg-gold text-base hover:bg-gold-dim disabled:opacity-50 font-semibold",
+    secondary: "border border-line bg-panel-2 text-ink hover:border-ink-faint",
+    ghost: "text-ink-dim hover:bg-panel-2 hover:text-ink",
+    danger: "border border-down/40 bg-transparent text-down hover:bg-down/10",
   };
   return (
     <button
@@ -117,7 +114,7 @@ export function Button({
       onClick={onClick}
       disabled={disabled}
       className={cx(
-        "inline-flex items-center justify-center rounded-lg px-3.5 py-2 text-sm font-medium transition disabled:cursor-not-allowed",
+        "inline-flex items-center justify-center rounded px-3 py-1.5 text-sm transition disabled:cursor-not-allowed",
         variants[variant],
         className,
       )}
@@ -137,10 +134,10 @@ export function PageHeader({
   action?: ReactNode;
 }) {
   return (
-    <div className="flex flex-wrap items-end justify-between gap-3">
+    <div className="flex flex-wrap items-end justify-between gap-3 border-b border-line-soft pb-4">
       <div>
-        <h1 className="text-xl font-semibold text-slate-900">{title}</h1>
-        {subtitle ? <p className="mt-1 text-sm text-slate-500">{subtitle}</p> : null}
+        <h1 className="text-lg font-semibold tracking-tight text-ink">{title}</h1>
+        {subtitle ? <p className="mt-1 text-sm text-ink-dim">{subtitle}</p> : null}
       </div>
       {action}
     </div>
@@ -149,8 +146,8 @@ export function PageHeader({
 
 export function Spinner({ label }: { label?: string }) {
   return (
-    <div className="flex items-center gap-2 text-sm text-slate-500">
-      <span className="h-4 w-4 animate-spin rounded-full border-2 border-slate-300 border-t-blue-600" />
+    <div className="flex items-center gap-2 text-sm text-ink-dim">
+      <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-line border-t-gold" />
       {label ?? "Loading"}
     </div>
   );
@@ -158,16 +155,16 @@ export function Spinner({ label }: { label?: string }) {
 
 export function EmptyState({ title, hint }: { title: string; hint?: string }) {
   return (
-    <div className="rounded-lg border border-dashed border-slate-300 bg-slate-50 px-5 py-8 text-center">
-      <p className="text-sm font-medium text-slate-700">{title}</p>
-      {hint ? <p className="mt-1 text-xs text-slate-500">{hint}</p> : null}
+    <div className="rounded-md border border-dashed border-line px-5 py-8 text-center">
+      <p className="text-sm font-medium text-ink-dim">{title}</p>
+      {hint ? <p className="mt-1 text-xs text-ink-faint">{hint}</p> : null}
     </div>
   );
 }
 
 export function ErrorNote({ message }: { message: string }) {
   return (
-    <div className="rounded-lg border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
+    <div className="rounded-md border border-down/40 bg-down/10 px-4 py-3 text-sm text-down">
       {message}
     </div>
   );
@@ -184,12 +181,14 @@ export function Field({
 }) {
   return (
     <label className="block">
-      <span className="mb-1 block text-sm font-medium text-slate-700">{label}</span>
+      <span className="mb-1 block text-xs font-medium uppercase tracking-wide text-ink-faint">
+        {label}
+      </span>
       {children}
-      {error ? <span className="mt-1 block text-xs text-rose-600">{error}</span> : null}
+      {error ? <span className="mt-1 block text-xs text-down">{error}</span> : null}
     </label>
   );
 }
 
 export const inputClass =
-  "w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100";
+  "w-full rounded border border-line bg-base px-3 py-2 text-sm text-ink outline-none placeholder:text-ink-faint focus:border-gold/70";

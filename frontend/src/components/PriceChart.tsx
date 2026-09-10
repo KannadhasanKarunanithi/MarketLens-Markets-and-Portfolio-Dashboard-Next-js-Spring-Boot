@@ -26,15 +26,15 @@ export function PriceChart({ candles, mode }: { candles: Candle[]; mode: Mode })
       autoSize: true,
       layout: {
         background: { color: "transparent" },
-        textColor: "#64748b",
-        fontFamily: "var(--font-inter), sans-serif",
+        textColor: "#8b93a7",
+        fontFamily: "var(--font-mono-data), monospace",
       },
       grid: {
-        vertLines: { color: "#f1f5f9" },
-        horzLines: { color: "#f1f5f9" },
+        vertLines: { color: "#1a2230" },
+        horzLines: { color: "#1a2230" },
       },
-      rightPriceScale: { borderColor: "#e2e8f0" },
-      timeScale: { borderColor: "#e2e8f0" },
+      rightPriceScale: { borderColor: "#262d3b" },
+      timeScale: { borderColor: "#262d3b" },
       crosshair: { mode: 1 },
     });
     chartRef.current = chart;
@@ -57,10 +57,10 @@ export function PriceChart({ candles, mode }: { candles: Candle[]; mode: Mode })
 
     if (mode === "candles") {
       const series = chart.addSeries(CandlestickSeries, {
-        upColor: "#059669",
-        downColor: "#e11d48",
-        wickUpColor: "#059669",
-        wickDownColor: "#e11d48",
+        upColor: "#35c65a",
+        downColor: "#f5564a",
+        wickUpColor: "#35c65a",
+        wickDownColor: "#f5564a",
         borderVisible: false,
       });
       series.setData(
@@ -75,9 +75,9 @@ export function PriceChart({ candles, mode }: { candles: Candle[]; mode: Mode })
       seriesRef.current = series;
     } else {
       const series = chart.addSeries(AreaSeries, {
-        lineColor: "#2563eb",
-        topColor: "rgba(37, 99, 235, 0.25)",
-        bottomColor: "rgba(37, 99, 235, 0.02)",
+        lineColor: "#f2b74a",
+        topColor: "rgba(242, 183, 74, 0.22)",
+        bottomColor: "rgba(242, 183, 74, 0.02)",
         lineWidth: 2,
       });
       series.setData(candles.map((c) => ({ time: c.date as Time, value: c.close })));

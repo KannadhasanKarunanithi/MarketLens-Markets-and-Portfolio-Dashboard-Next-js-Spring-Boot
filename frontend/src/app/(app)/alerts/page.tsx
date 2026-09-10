@@ -152,15 +152,15 @@ export default function AlertsPage() {
               triggered.map((alert) => (
                 <div
                   key={alert.id}
-                  className="rounded-lg border border-slate-200 p-3 text-sm"
+                  className="rounded border border-line p-3 text-sm"
                 >
                   <div className="flex items-center justify-between">
-                    <span className="font-medium text-slate-900">{alert.symbol}</span>
+                    <span className="font-medium text-ink">{alert.symbol}</span>
                     <Badge tone={alert.acknowledged ? "slate" : "amber"}>
                       {alert.acknowledged ? "Seen" : "New"}
                     </Badge>
                   </div>
-                  <p className="mt-1 text-slate-600">
+                  <p className="mt-1 text-ink-dim">
                     {alert.direction === "ABOVE" ? "Rose to" : "Fell to"}{" "}
                     {formatCurrency(alert.priceAtTrigger)} on {formatDate(alert.triggeredAt)}
                   </p>
@@ -168,14 +168,14 @@ export default function AlertsPage() {
                     {!alert.acknowledged ? (
                       <button
                         onClick={() => acknowledge.mutate(alert.id)}
-                        className="text-blue-600 hover:underline"
+                        className="text-gold hover:underline"
                       >
                         Mark as seen
                       </button>
                     ) : null}
                     <button
                       onClick={() => remove.mutate(alert.id)}
-                      className="text-slate-400 hover:text-rose-600"
+                      className="text-ink-faint hover:text-down"
                     >
                       Delete
                     </button>
@@ -197,19 +197,19 @@ export default function AlertsPage() {
               active.map((alert) => (
                 <div
                   key={alert.id}
-                  className="flex items-center justify-between rounded-lg border border-slate-200 p-3 text-sm"
+                  className="flex items-center justify-between rounded border border-line p-3 text-sm"
                 >
                   <div>
-                    <span className="font-medium text-slate-900">{alert.symbol}</span>
-                    <p className="text-slate-600">
+                    <span className="font-medium text-ink">{alert.symbol}</span>
+                    <p className="text-ink-dim">
                       {alert.direction === "ABOVE" ? "at or above" : "at or below"}{" "}
                       {formatCurrency(alert.threshold)}
                     </p>
-                    {alert.note ? <p className="text-xs text-slate-400">{alert.note}</p> : null}
+                    {alert.note ? <p className="text-xs text-ink-faint">{alert.note}</p> : null}
                   </div>
                   <button
                     onClick={() => remove.mutate(alert.id)}
-                    className="text-xs text-slate-400 hover:text-rose-600"
+                    className="text-xs text-ink-faint hover:text-down"
                   >
                     Delete
                   </button>

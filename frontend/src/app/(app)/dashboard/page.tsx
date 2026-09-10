@@ -88,13 +88,13 @@ export default function DashboardPage() {
       <Card>
         <CardHeader title="Jump back in" />
         <CardBody className="flex flex-wrap gap-3 text-sm">
-          <Link href="/portfolio" className="rounded-lg border border-slate-300 px-3 py-2 hover:bg-slate-50">
+          <Link href="/portfolio" className="rounded border border-line px-3 py-2 hover:bg-panel-2">
             View portfolio analytics
           </Link>
-          <Link href="/markets" className="rounded-lg border border-slate-300 px-3 py-2 hover:bg-slate-50">
+          <Link href="/markets" className="rounded border border-line px-3 py-2 hover:bg-panel-2">
             Open your watchlists
           </Link>
-          <Link href="/transactions" className="rounded-lg border border-slate-300 px-3 py-2 hover:bg-slate-50">
+          <Link href="/transactions" className="rounded border border-line px-3 py-2 hover:bg-panel-2">
             Record a trade
           </Link>
         </CardBody>
@@ -121,19 +121,19 @@ function MoversCard({
             <Spinner />
           </div>
         ) : (
-          <ul className="divide-y divide-slate-100">
+          <ul className="divide-y divide-line-soft">
             {rows.map((quote) => (
               <li key={quote.instrumentId}>
                 <Link
                   href={`/instruments/${quote.instrumentId}`}
-                  className="flex items-center justify-between px-5 py-3 text-sm hover:bg-slate-50"
+                  className="flex items-center justify-between px-5 py-3 text-sm hover:bg-panel-2"
                 >
                   <div>
-                    <p className="font-medium text-slate-900">{quote.symbol}</p>
-                    <p className="text-xs text-slate-500">{quote.name}</p>
+                    <p className="font-medium text-ink">{quote.symbol}</p>
+                    <p className="text-xs text-ink-dim">{quote.name}</p>
                   </div>
                   <div className="text-right tabular-nums">
-                    <p className="font-medium text-slate-900">{formatCurrency(quote.lastPrice)}</p>
+                    <p className="font-medium text-ink">{formatCurrency(quote.lastPrice)}</p>
                     <p className={`text-xs ${trendClass(quote.changePct)}`}>
                       {formatPercent(quote.changePct)}
                     </p>

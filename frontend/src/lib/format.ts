@@ -58,7 +58,7 @@ export function formatTime(value: string | null | undefined): string {
 }
 
 export function trendClass(value: number): string {
-  if (value > 0) return "text-emerald-600";
-  if (value < 0) return "text-rose-600";
-  return "text-slate-500";
+  if (value > 0) return "text-up";
+  if (value < 0) return "text-down";
+  return "text-ink-dim";
 }

@@ -64,7 +64,7 @@ export default function PortfolioPage() {
           title="Your portfolio is empty"
           hint="Record buy transactions and they will show up here with live valuations."
         />
-        <Link href="/transactions" className="text-sm text-blue-600 hover:underline">
+        <Link href="/transactions" className="text-sm text-gold hover:underline">
           Go to transactions
         </Link>
       </div>
@@ -122,7 +122,7 @@ export default function PortfolioPage() {
                     onClick={() => setRange(r)}
                     className={cx(
                       "rounded-md px-2 py-1 text-xs font-medium uppercase",
-                      range === r ? "bg-blue-600 text-white" : "text-slate-600 hover:bg-slate-100",
+                      range === r ? "bg-gold text-base" : "text-ink-dim hover:bg-panel-2",
                     )}
                   >
                     {r}
@@ -146,7 +146,7 @@ export default function PortfolioPage() {
         <CardBody className="p-0">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
-              <thead className="border-b border-slate-100 text-left text-xs uppercase text-slate-500">
+              <thead className="border-b border-line-soft text-left text-xs uppercase text-ink-dim">
                 <tr>
                   <th className="px-5 py-2 font-medium">Instrument</th>
                   <th className="px-5 py-2 text-right font-medium">Qty</th>
@@ -157,17 +157,17 @@ export default function PortfolioPage() {
                   <th className="px-5 py-2 text-right font-medium">Weight</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-line-soft">
                 {holdings.map((h) => (
-                  <tr key={h.instrumentId} className="hover:bg-slate-50">
+                  <tr key={h.instrumentId} className="hover:bg-panel-2">
                     <td className="px-5 py-3">
                       <Link
                         href={`/instruments/${h.instrumentId}`}
-                        className="font-medium text-slate-900 hover:text-blue-600"
+                        className="font-medium text-ink hover:text-gold"
                       >
                         {h.symbol}
                       </Link>
-                      <p className="text-xs text-slate-500">{h.sector}</p>
+                      <p className="text-xs text-ink-dim">{h.sector}</p>
                     </td>
                     <td className="px-5 py-3 text-right tabular-nums">{formatNumber(h.quantity)}</td>
                     <td className="px-5 py-3 text-right tabular-nums">{formatCurrency(h.averageCost)}</td>
@@ -177,7 +177,7 @@ export default function PortfolioPage() {
                       {formatSignedCurrency(h.unrealisedPnl)}
                       <span className="block text-xs">{formatPercent(h.unrealisedPnlPct)}</span>
                     </td>
-                    <td className="px-5 py-3 text-right tabular-nums text-slate-500">
+                    <td className="px-5 py-3 text-right tabular-nums text-ink-dim">
                       {formatPercent(h.portfolioWeight).replace("+", "")}
                     </td>
                   </tr>

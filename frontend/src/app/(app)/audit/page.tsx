@@ -50,7 +50,7 @@ export default function AuditPage() {
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
-                <thead className="border-b border-slate-100 text-left text-xs uppercase text-slate-500">
+                <thead className="border-b border-line-soft text-left text-xs uppercase text-ink-dim">
                   <tr>
                     <th className="px-5 py-2 font-medium">When</th>
                     <th className="px-5 py-2 font-medium">Actor</th>
@@ -58,16 +58,16 @@ export default function AuditPage() {
                     <th className="px-5 py-2 text-right font-medium">Status</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100">
+                <tbody className="divide-y divide-line-soft">
                   {(data?.content ?? []).map((event) => (
-                    <tr key={event.id} className="hover:bg-slate-50">
-                      <td className="px-5 py-3 whitespace-nowrap text-slate-600">
+                    <tr key={event.id} className="hover:bg-panel-2">
+                      <td className="px-5 py-3 whitespace-nowrap text-ink-dim">
                         {formatDate(event.at)} {formatTime(event.at)}
                       </td>
                       <td className="px-5 py-3">{event.actor}</td>
                       <td className="px-5 py-3">
-                        <span className="mr-2 font-medium text-slate-900">{event.method}</span>
-                        <span className="text-xs text-slate-500">{event.path}</span>
+                        <span className="mr-2 font-medium text-ink">{event.method}</span>
+                        <span className="text-xs text-ink-dim">{event.path}</span>
                       </td>
                       <td className="px-5 py-3 text-right">
                         <Badge tone={event.statusCode < 400 ? "green" : "red"}>{event.statusCode}</Badge>
