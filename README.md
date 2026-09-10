@@ -10,7 +10,7 @@ and Spring Boot. It was built in stages, one module at a time.
 
 ## Screens
 
-The portfolio view with allocation and performance against a benchmark.
+The portfolio view with allocation by sector and performance against the Nifty 50.
 
 ![Portfolio](docs/screenshots/04-portfolio.jpg)
 
@@ -18,13 +18,17 @@ An instrument with its candlestick chart and range controls.
 
 ![Instrument detail](docs/screenshots/03-instrument.jpg)
 
-Watchlists with prices that update live.
+Watchlists with prices that update live over server sent events.
 
 ![Markets](docs/screenshots/02-markets.jpg)
 
-The dashboard.
+The overview dashboard.
 
 ![Dashboard](docs/screenshots/01-dashboard.jpg)
+
+The audit log, for administrators.
+
+![Audit log](docs/screenshots/07-audit.jpg)
 
 ## What is built
 
