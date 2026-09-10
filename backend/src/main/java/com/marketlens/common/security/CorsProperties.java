@@ -7,7 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "marketlens.cors")
 public class CorsProperties {
 
-    private List<String> allowedOrigins = List.of("http://localhost:3000");
+    private List<String> allowedOrigins = List.of("http://localhost:[*]");
 
     public List<String> getAllowedOrigins() {
         return allowedOrigins;

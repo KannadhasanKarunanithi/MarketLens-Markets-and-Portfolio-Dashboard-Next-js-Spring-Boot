@@ -7,11 +7,18 @@ import java.util.UUID;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.PostLoad;
+import jakarta.persistence.PostPersist;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
+import org.springframework.data.domain.Persistable;
 
 @Entity
 @Table(name = "price_bars")
-public class PriceBar {
+public class PriceBar implements Persistable<UUID> {
+
+    @Transient
+    private boolean freshlyCreated;
 
     @Id
     @Column(nullable = false, updatable = false)
@@ -51,10 +58,23 @@ public class PriceBar {
         this.low = low;
         this.close = close;
         this.volume = volume;
+        this.freshlyCreated = true;
     }
 
+    @Override
     public UUID getId() {
         return id;
+    }
+
+    @Override
+    public boolean isNew() {
+        return freshlyCreated;
+    }
+
+    @PostLoad
+    @PostPersist
+    void markPersisted() {
+        this.freshlyCreated = false;
     }
 
     public UUID getInstrumentId() {
