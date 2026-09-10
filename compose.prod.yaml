@@ -1,0 +1,44 @@
+# Runs the whole stack in containers. Build and start with:
+#   docker compose -f compose.prod.yaml up --build
+# Then open http://localhost:3000
+
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: marketlens
+      POSTGRES_USER: marketlens
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-marketlens}
+    volumes:
+      - marketlens-prod-db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U marketlens -d marketlens"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: ./backend
+    environment:
+      DB_URL: jdbc:postgresql://db:5432/marketlens
+      DB_USERNAME: marketlens
+      DB_PASSWORD: ${DB_PASSWORD:-marketlens}
+      JWT_SECRET: ${JWT_SECRET:-please-set-a-long-random-value-in-the-environment}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-admin12345}
+      DEMO_PASSWORD: ${DEMO_PASSWORD:-demo12345}
+      SPRING_PROFILES_ACTIVE: prod
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend:
+    build: ./frontend
+    environment:
+      API_PROXY_TARGET: http://backend:8090
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+volumes:
+  marketlens-prod-db:
