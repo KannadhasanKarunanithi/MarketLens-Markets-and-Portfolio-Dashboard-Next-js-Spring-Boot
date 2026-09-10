@@ -1,0 +1,6 @@
+marketlens:
+  marketdata:
+    seed-days: 40
+    tick-interval: 3600s
+  bootstrap:
+    demo-enabled: false
