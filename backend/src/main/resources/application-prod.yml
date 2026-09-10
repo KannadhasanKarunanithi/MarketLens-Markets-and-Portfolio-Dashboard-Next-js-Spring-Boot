@@ -1,0 +1,13 @@
+management:
+  endpoint:
+    health:
+      show-details: never
+
+marketlens:
+  marketdata:
+    seed-days: 260
+
+logging:
+  level:
+    org.hibernate.SQL: warn
+    org.flywaydb: warn
