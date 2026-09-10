@@ -102,9 +102,12 @@ public class PortfolioAnalyticsService {
                 : new ArrayList<>(benchmarkCloses.keySet());
         calendar = calendar.stream().filter(d -> !d.isBefore(from)).toList();
 
+        // Replay the cash flows into the benchmark: every buy converts its rupees
+        // into index units at that day's price, every sell removes units. The
+        // portfolio line and the benchmark line then show what the same money did.
         List<PerformancePoint> series = new ArrayList<>();
-        BigDecimal firstPortfolioValue = null;
-        BigDecimal firstBenchmarkClose = null;
+        BigDecimal netInvested = BigDecimal.ZERO;
+        boolean started = false;
 
         for (LocalDate date : calendar) {
             Map<UUID, BigDecimal> heldByInstrument = quantitiesAsOf(ledger, date);
@@ -119,24 +122,37 @@ public class PortfolioAnalyticsService {
                 }
             }
             value = value.setScale(2, RoundingMode.HALF_UP);
-            if (value.signum() == 0 && firstPortfolioValue == null) {
+            if (!started && value.signum() == 0) {
                 continue;
             }
-            if (firstPortfolioValue == null) {
-                firstPortfolioValue = value;
-                firstBenchmarkClose = priceOnOrBefore(benchmarkCloses, date);
-            }
-            BigDecimal benchmarkValue = BigDecimal.ZERO;
+            started = true;
+
             BigDecimal benchClose = priceOnOrBefore(benchmarkCloses, date);
-            if (benchClose != null && firstBenchmarkClose != null && firstBenchmarkClose.signum() != 0) {
-                benchmarkValue = firstPortfolioValue.multiply(benchClose)
-                        .divide(firstBenchmarkClose, 2, RoundingMode.HALF_UP);
-            }
+            BigDecimal benchmarkUnits = benchmarkUnitsAsOf(ledger, date, benchmarkCloses);
+            BigDecimal benchmarkValue = benchClose == null
+                    ? BigDecimal.ZERO
+                    : benchmarkUnits.multiply(benchClose).setScale(2, RoundingMode.HALF_UP);
             series.add(new PerformancePoint(date, value, benchmarkValue));
         }
 
-        BigDecimal absoluteReturn = pctChange(series, PerformancePoint::portfolioValue);
-        BigDecimal benchmarkReturn = pctChange(series, PerformancePoint::benchmarkValue);
+        LocalDate lastDate = series.isEmpty() ? LocalDate.now() : series.get(series.size() - 1).date();
+        for (Transaction tx : ledger) {
+            if (tx.getTradedOn().isAfter(lastDate)) {
+                continue;
+            }
+            if (tx.getType() == TransactionType.BUY) {
+                netInvested = netInvested.add(tx.grossValue()).add(tx.getFees());
+            } else if (tx.getType() == TransactionType.SELL) {
+                netInvested = netInvested.subtract(tx.grossValue().subtract(tx.getFees()));
+            }
+        }
+
+        BigDecimal portfolioLast = series.isEmpty() ? BigDecimal.ZERO
+                : series.get(series.size() - 1).portfolioValue();
+        BigDecimal benchmarkLast = series.isEmpty() ? BigDecimal.ZERO
+                : series.get(series.size() - 1).benchmarkValue();
+        BigDecimal absoluteReturn = returnOn(portfolioLast, netInvested);
+        BigDecimal benchmarkReturn = returnOn(benchmarkLast, netInvested);
         BigDecimal xirr = BigDecimal.valueOf(computeXirr(ledger, series))
                 .multiply(BigDecimal.valueOf(100)).setScale(2, RoundingMode.HALF_UP);
 
@@ -158,25 +174,42 @@ public class PortfolioAnalyticsService {
         return held;
     }
 
+    private BigDecimal benchmarkUnitsAsOf(List<Transaction> ledger, LocalDate date,
+            TreeMap<LocalDate, BigDecimal> benchmarkCloses) {
+        BigDecimal units = BigDecimal.ZERO;
+        for (Transaction tx : ledger) {
+            if (tx.getTradedOn().isAfter(date)) {
+                break;
+            }
+            BigDecimal close = priceOnOrBefore(benchmarkCloses, tx.getTradedOn());
+            if (close == null || close.signum() == 0) {
+                continue;
+            }
+            if (tx.getType() == TransactionType.BUY) {
+                units = units.add(tx.grossValue().add(tx.getFees())
+                        .divide(close, 8, RoundingMode.HALF_UP));
+            } else if (tx.getType() == TransactionType.SELL) {
+                units = units.subtract(tx.grossValue().subtract(tx.getFees())
+                        .divide(close, 8, RoundingMode.HALF_UP));
+            }
+        }
+        return units.max(BigDecimal.ZERO);
+    }
+
+    private BigDecimal returnOn(BigDecimal endValue, BigDecimal invested) {
+        if (invested.signum() <= 0) {
+            return BigDecimal.ZERO;
+        }
+        return endValue.subtract(invested).multiply(BigDecimal.valueOf(100))
+                .divide(invested, 2, RoundingMode.HALF_UP);
+    }
+
     private BigDecimal priceOnOrBefore(TreeMap<LocalDate, BigDecimal> byDate, LocalDate date) {
         if (byDate == null || byDate.isEmpty()) {
             return null;
         }
         Map.Entry<LocalDate, BigDecimal> entry = byDate.floorEntry(date);
         return entry == null ? byDate.firstEntry().getValue() : entry.getValue();
-    }
-
-    private BigDecimal pctChange(List<PerformancePoint> series, Function<PerformancePoint, BigDecimal> field) {
-        if (series.size() < 2) {
-            return BigDecimal.ZERO;
-        }
-        BigDecimal start = field.apply(series.get(0));
-        BigDecimal end = field.apply(series.get(series.size() - 1));
-        if (start.signum() == 0) {
-            return BigDecimal.ZERO;
-        }
-        return end.subtract(start).multiply(BigDecimal.valueOf(100))
-                .divide(start, 2, RoundingMode.HALF_UP);
     }
 
     private double computeXirr(List<Transaction> ledger, List<PerformancePoint> series) {
