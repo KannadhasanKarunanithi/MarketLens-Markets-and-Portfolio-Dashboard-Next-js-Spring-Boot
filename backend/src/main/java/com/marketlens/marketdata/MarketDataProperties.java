@@ -16,6 +16,42 @@ public class MarketDataProperties {
     /** How often the simulator moves prices. */
     private Duration tickInterval = Duration.ofSeconds(15);
 
+    private final Finnhub finnhub = new Finnhub();
+
+    public Finnhub getFinnhub() {
+        return finnhub;
+    }
+
+    public static class Finnhub {
+        private String baseUrl = "https://finnhub.io/api/v1";
+        private String apiKey = "";
+        private String symbolSuffix = ".NS";
+
+        public String getBaseUrl() {
+            return baseUrl;
+        }
+
+        public void setBaseUrl(String baseUrl) {
+            this.baseUrl = baseUrl;
+        }
+
+        public String getApiKey() {
+            return apiKey;
+        }
+
+        public void setApiKey(String apiKey) {
+            this.apiKey = apiKey;
+        }
+
+        public String getSymbolSuffix() {
+            return symbolSuffix;
+        }
+
+        public void setSymbolSuffix(String symbolSuffix) {
+            this.symbolSuffix = symbolSuffix;
+        }
+    }
+
     public String getProvider() {
         return provider;
     }
